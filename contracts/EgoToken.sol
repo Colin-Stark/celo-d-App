@@ -21,7 +21,7 @@ contract EgoToken is ERC721, ERC721URIStorage, Ownable {
 
     /// @notice Mints a new token and assign the function caller to be the owner
     /// @param uri Token metadata URI
-    function safeMint(string memory uri) public {
+    function safeMint(string memory uri) public payable {
         require(totalSupply() < _maxTokens, "Maximum tokens minted");
         require(msg.value == _tokenPrice, "Incorrect value sent");
         uint256 tokenId = _tokenIdCounter.current();
