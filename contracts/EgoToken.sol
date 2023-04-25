@@ -13,11 +13,17 @@ contract EgoToken is ERC721, ERC721URIStorage, Ownable {
 
     Counters.Counter private _tokenIdCounter;
 
+    uint256 private _maxTokens;
+    uint256 private _tokenPrice;
+    
+
     constructor() ERC721("EgoToken", "EGT") {}
 
     /// @notice Mints a new token and assign the function caller to be the owner
     /// @param uri Token metadata URI
     function safeMint(string memory uri) public {
+        require(totalSupply() < _maxTokens, "Maximum tokens minted");
+        require(msg.value == _tokenPrice, "Incorrect value sent");
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
@@ -27,9 +33,9 @@ contract EgoToken is ERC721, ERC721URIStorage, Ownable {
     /// @notice Keeps track of total number of tokens minted 
     /// @return Total number of tokens minted 
     function tokenCounter() public view returns (uint256) {
-        uint256 counter = _tokenIdCounter.current();
-        return counter;
+        return _tokenIdCounter.current();
     }
+    
 
     // The following functions are overrides required by Solidity.
 
